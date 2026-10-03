@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Veri-Fi · Invoice & Expense Checker</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/axios@1.7.2/dist/axios.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+<style>body{background:#f4f7fb;color:#0f1c33;font-family:"Segoe UI",system-ui,sans-serif}</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect}=React;
+const api=axios.create({baseURL:"/api"});
+const money=n=>n==null?"-":Number(n).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+const STATUS={AUTO_PASS:["Auto-passed","bg-emerald-100 text-emerald-800"],FLAG:["Flagged","bg-red-100 text-red-800"],REVIEW:["Needs review","bg-amber-100 text-amber-800"]};
+const Badge=({s})=><span className={"px-2 py-0.5 rounded text-xs font-medium "+STATUS[s][1]}>{STATUS[s][0]}</span>;
+const Stat=({label,value,tone})=><div className="bg-white rounded-lg border border-slate-200 p-4"><div className="text-sm text-slate-500">{label}</div><div className={"text-2xl font-semibold mt-1 "+(tone||"")}>{value}</div></div>;
+const FIELDS=[["vendor","Vendor"],["invoice_no","Invoice no."],["date","Date"],["amount","Amount"]];
+
+function Detail({row,onClose,onDecide}){
+  const [ai,setAi]=useState(null);
+  useEffect(()=>{setAi(null)},[row.invoice_id]);
+  const explain=async()=>{try{const {data}=await api.get("/explain/"+row.invoice_id);setAi(data)}catch(e){setAi({text:"Could not load the explanation.",source:"error"})}};
+  return <aside className="fixed inset-y-0 right-0 w-full max-w-xl bg-white shadow-2xl overflow-y-auto p-6 z-10">
+    <div className="flex justify-between items-start">
+      <div><div className="text-lg font-semibold">{row.invoice_id}</div><div className="text-sm text-slate-500">{row.vendor||"No vendor"}</div></div>
+      <button onClick={onClose} className="text-slate-500 hover:text-slate-900 text-xl leading-none" aria-label="Close">x</button>
+    </div>
+    <div className="mt-3 flex items-center gap-2"><Badge s={row.status}/><span className="text-sm text-slate-500">Confidence {Math.round(row.confidence*100)}%</span>
+      {row.human_decision&&<span className="text-sm font-medium">Reviewer: {row.human_decision.toLowerCase()}</span>}</div>
+    {row.flags.map((f,i)=><div key={i} className="mt-4 border border-slate-200 rounded-lg p-3">
+      <div className="text-sm font-medium">{f.rule} <span className="text-slate-500 font-normal">({Math.round(f.confidence*100)}% confidence)</span></div>
+      <p className="text-sm mt-1">{f.message}</p>
+      {f.matched&&<table className="w-full text-sm mt-3"><thead><tr className="text-left text-slate-500"><th className="py-1"></th><th>This invoice</th><th>Matched {f.matched.invoice_id}</th></tr></thead>
+        <tbody>{FIELDS.map(([k,l])=><tr key={k} className="border-t border-slate-100"><td className="py-1 text-slate-500">{l}</td><td>{row[k]??"-"}</td><td>{f.matched[k]??"-"}</td></tr>)}</tbody></table>}
+    </div>)}
+    {row.status==="AUTO_PASS"&&<p className="mt-4 text-sm text-slate-600">{row.explanation}</p>}
+    {row.status!=="AUTO_PASS"&&<div className="mt-4">
+      <button onClick={explain} className="text-sm text-blue-700 underline">Explain with AI</button>
+      {ai&&<p className="text-sm mt-2 bg-slate-50 rounded p-3">{ai.text}<span className="block text-xs text-slate-400 mt-1">Source: {ai.source}</span></p>}
+      <div className="mt-5 flex gap-2">
+        <button onClick={()=>onDecide(row.invoice_id,"APPROVED")} className="px-3 py-1.5 rounded bg-emerald-600 text-white text-sm">Approve</button>
+        <button onClick={()=>onDecide(row.invoice_id,"REJECTED")} className="px-3 py-1.5 rounded bg-red-600 text-white text-sm">Reject</button>
+      </div></div>}
+  </aside>;
+}
+
+function Audit(){
+  const [log,setLog]=useState([]);
+  useEffect(()=>{api.get("/audit").then(r=>setLog(r.data)).catch(()=>{})},[]);
+  return <div className="bg-white rounded-lg border border-slate-200 overflow-x-auto"><table className="w-full text-sm">
+    <thead className="bg-slate-50 text-left text-slate-500"><tr><th className="p-2">Time</th><th>Invoice</th><th>Actor</th><th>Decision</th><th>Detail</th></tr></thead>
+    <tbody>{log.map((l,i)=><tr key={i} className="border-t border-slate-100"><td className="p-2 whitespace-nowrap">{l.ts}</td><td>{l.invoice_id}</td><td>{l.actor}</td><td>{l.decision}</td><td className="pr-2 text-slate-600">{l.detail}</td></tr>)}</tbody></table>
+    {!log.length&&<p className="p-4 text-sm text-slate-500">No decisions logged yet. Run a check to start the audit log.</p>}</div>;
+}
+
+function Chat(){
+  const [msgs,setMsgs]=useState([{r:"bot",t:"Ask about an invoice ID, duplicates, over-limit claims or missing fields."}]);
+  const [q,setQ]=useState(""),[wait,setWait]=useState(false);
+  const send=async t=>{t=(t||q).trim();if(!t)return;setQ("");setMsgs(m=>[...m,{r:"me",t}]);setWait(true);
+    try{const {data}=await api.post("/chat",{question:t});setMsgs(m=>[...m,{r:"bot",t:data.answer,src:data.source}])}
+    catch(e){setMsgs(m=>[...m,{r:"bot",t:e.response?.data?.detail||"The chat request failed."}])}setWait(false)};
+  return <div className="bg-white rounded-lg border border-slate-200 p-4 max-w-2xl">
+    <div className="space-y-3 mb-4">{msgs.map((m,i)=><div key={i} className={m.r==="me"?"text-right":""}>
+      <span className={"inline-block rounded-lg px-3 py-2 text-sm max-w-[85%] text-left "+(m.r==="me"?"bg-blue-600 text-white":"bg-slate-100")}>{m.t}</span>
+      {m.src&&<div className="text-xs text-slate-400 mt-0.5">Source: {m.src}</div>}</div>)}{wait&&<div className="text-sm text-slate-400">Thinking...</div>}</div>
+    <div className="flex flex-wrap gap-2 mb-3">{["Show duplicates","Which claims are over limit?","Any missing fields?"].map(s=><button key={s} onClick={()=>send(s)} className="text-xs border border-slate-300 rounded-full px-3 py-1 hover:bg-slate-50">{s}</button>)}</div>
+    <div className="flex gap-2"><input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&send()} placeholder="Ask about the results" className="flex-1 border border-slate-300 rounded px-3 py-2 text-sm"/>
+      <button onClick={()=>send()} className="px-4 py-2 rounded bg-blue-600 text-white text-sm">Ask</button></div></div>;
+}
+
+function App(){
+  const [res,setRes]=useState(null),[tab,setTab]=useState("results"),[filter,setFilter]=useState("ALL"),[sel,setSel]=useState(null),[busy,setBusy]=useState(false),[err,setErr]=useState("");
+  const refresh=async()=>{const {data}=await api.get("/results");setRes(data.rows?data:null)};
+  useEffect(()=>{refresh().catch(()=>{})},[]);
+  const load=async p=>{setBusy(true);setErr("");try{const {data}=await p;setRes(data);setSel(null)}catch(e){setErr(e.response?.data?.detail||e.message)}setBusy(false)};
+  const upload=e=>{const f=e.target.files[0];if(!f)return;const fd=new FormData();fd.append("file",f);load(api.post("/analyze",fd));e.target.value=""};
+  const decide=async(id,decision)=>{await api.post("/review",{invoice_id:id,decision});await refresh();setSel(null)};
+  const rows=res?res.rows.filter(r=>filter==="ALL"||r.status===filter):[];
+  const row=res&&sel?res.rows.find(r=>r.invoice_id===sel):null;
+  const s=res&&res.summary;
+  const btn="px-3 py-2 rounded text-sm border border-slate-300 bg-white hover:bg-slate-50 cursor-pointer";
+  return <div className="max-w-6xl mx-auto p-6">
+    <header className="flex flex-wrap items-center justify-between gap-3">
+      <div><h1 className="text-2xl font-bold">Veri-Fi</h1><p className="text-sm text-slate-500">Invoice &amp; Expense Checker · Every row is screened. Clean invoices pass automatically; exceptions go to a reviewer with the matched record.</p></div>
+      <div className="flex gap-2">
+        <button className={btn} disabled={busy} onClick={()=>load(api.post("/sample"))}>Load sample data</button>
+        <label className={btn}>Upload CSV or Excel<input type="file" accept=".csv,.xlsx,.xls" className="hidden" onChange={upload}/></label>
+        {res&&<a className={btn} href="/api/report.csv">Download report</a>}
+      </div>
+    </header>
+    {err&&<div className="mt-4 bg-red-50 border border-red-200 text-red-800 text-sm rounded p-3">{err}</div>}
+    {busy&&<div className="mt-4 text-sm text-slate-500">Checking invoices...</div>}
+    {!res&&!busy&&<div className="mt-10 bg-white border border-dashed border-slate-300 rounded-lg p-10 text-center text-slate-500">Load the sample data or upload a CSV or Excel file to run the checks.</div>}
+    {res&&<>
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-6">
+        <Stat label="Invoices checked" value={s.total}/><Stat label="Auto-passed" value={s.auto_pass} tone="text-emerald-700"/>
+        <Stat label="Flagged" value={s.flagged} tone="text-red-700"/><Stat label="Needs review" value={s.review} tone="text-amber-700"/>
+        <Stat label="Money at risk" value={money(s.money_at_risk)}/></div>
+      <nav className="flex gap-4 mt-8 border-b border-slate-200 text-sm">{[["results","Results"],["audit","Audit log"],["chat","Ask the assistant"]].map(([k,l])=>
+        <button key={k} onClick={()=>setTab(k)} className={"pb-2 "+(tab===k?"border-b-2 border-blue-600 font-medium":"text-slate-500")}>{l}</button>)}</nav>
+      <div className="mt-4">
+        {tab==="results"&&<>
+          <div className="flex gap-2 mb-3 text-sm">{[["ALL","All"],["FLAG","Flagged"],["REVIEW","Needs review"],["AUTO_PASS","Auto-passed"]].map(([k,l])=>
+            <button key={k} onClick={()=>setFilter(k)} className={"px-3 py-1 rounded-full border "+(filter===k?"bg-blue-600 text-white border-blue-600":"border-slate-300 bg-white")}>{l}</button>)}</div>
+          <div className="bg-white rounded-lg border border-slate-200 overflow-x-auto"><table className="w-full text-sm">
+            <thead className="bg-slate-50 text-left text-slate-500"><tr><th className="p-2">Invoice</th><th>Vendor</th><th>Invoice no.</th><th>Date</th><th className="text-right">Amount</th><th className="pl-4">Status</th><th>Why</th></tr></thead>
+            <tbody>{rows.map(r=><tr key={r.invoice_id} onClick={()=>setSel(r.invoice_id)} className="border-t border-slate-100 hover:bg-blue-50 cursor-pointer">
+              <td className="p-2">{r.invoice_id}</td><td>{r.vendor||"-"}</td><td>{r.invoice_no||"-"}</td><td>{r.date||"-"}</td><td className="text-right">{money(r.amount)}</td>
+              <td className="pl-4"><Badge s={r.status}/>{r.human_decision&&<span className="ml-2 text-xs text-slate-500">{r.human_decision.toLowerCase()}</span>}</td>
+              <td className="pr-2 text-slate-600 max-w-xs truncate">{r.status==="AUTO_PASS"?"":r.flags.map(f=>f.rule.split("_").slice(1).join(" ").toLowerCase()).join(", ")}</td></tr>)}</tbody></table>
+            {!rows.length&&<p className="p-4 text-sm text-slate-500">No invoices match this filter.</p>}</div></>}
+        {tab==="audit"&&<Audit/>}
+        {tab==="chat"&&<Chat/>}
+      </div></>}
+    {row&&<Detail row={row} onClose={()=>setSel(null)} onDecide={decide}/>}
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

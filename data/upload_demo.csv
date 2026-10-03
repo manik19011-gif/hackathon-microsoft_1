@@ -1,0 +1,11 @@
+transaction_id,supplier,invoice_number,invoice_date,total,expense_type,employee_name
+TX-1001,SkyHigh Travels,SKY-2048,10/09/2026,1450.00,Travel,Riya Shah
+TX-1002,Cafe Bloom,MEAL-8831,12/09/2026,110.00,Meals,Arjun Mehta
+TX-1003,Metro Cab,CAB-992,13/09/2026,120.00,Meals,Arjun Mehta
+TX-1004,CloudNine Software,CN-5481,14/09/2026,4800.00,Software,Riya Shah
+TX-1005,Brightline Consulting,BL-4621,15/09/2026,13500.00,Consulting,Dev Nair
+TX-1006,SkyHigh Travels,SKY-2048,10/09/2026,1450.00,Travel,Riya Shah
+TX-1007,Brightline Consulting,BL-4831,16/09/2026,3850.00,Consulting,Dev Nair
+TX-1008,Brightline Consulting,BL-4837,17/09/2026,3880.00,Consulting,Dev Nair
+TX-1009,SkyHigh Travels,SKY-3117,18/09/2026,1825.00,Travel,Arjun Mehta
+TX-1010,Cafe Bloom,,19/09/2026,95.00,Meals,Riya Shah

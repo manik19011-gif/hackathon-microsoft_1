@@ -1,0 +1,94 @@
+invoice_id,vendor,invoice_no,date,amount,category,employee,description
+INV-1001,Cafe Bloom,CAF-29772,2026-08-26,83.35,Meals,Aarav Mehta,Meals - Cafe Bloom
+INV-1002,AdWave Media,ADW-80239,2026-08-07,3559.82,Marketing,Aarav Mehta,Marketing - AdWave Media
+INV-1003,Brightline Consulting,BRI-38140,2026-08-03,3203.26,Consulting,Sara Khan,Consulting - Brightline Consulting
+INV-1004,Acme Office Supplies,ACM-41544,2026-08-06,388.59,Office Supplies,Aarav Mehta,Office Supplies - Acme Office Supplies
+INV-1005,AdWave Media,ADW-84115,2026-08-08,7632.15,Marketing,Vikram Rao,Marketing - AdWave Media
+INV-1006,Acme Office Supplies,ACM-85642,2026-09-07,302.14,Office Supplies,Priya Nair,Office Supplies - Acme Office Supplies
+INV-1007,Acme Office Supplies,ACM-82963,2026-09-24,154.58,Office Supplies,Sara Khan,Office Supplies - Acme Office Supplies
+INV-1008,SkyHigh Travels,SKY-80868,2026-08-08,749.46,Travel,Vikram Rao,Travel - SkyHigh Travels
+INV-1009,AdWave Media,ADW-99391,2026-08-12,1721.39,Marketing,Vikram Rao,Marketing - AdWave Media
+INV-1010,PowerGrid Utilities,POW-34624,2026-08-24,504.6,Utilities,Aarav Mehta,Utilities - PowerGrid Utilities
+INV-1011,Brightline Consulting,BRI-17812,2026-09-09,4883.42,Consulting,Vikram Rao,Consulting - Brightline Consulting
+INV-1012,CloudNine Software,CLO-51175,2026-08-30,2549.47,Software,Sara Khan,Software - CloudNine Software
+INV-1013,Cafe Bloom,CAF-49291,2026-08-16,98.41,Meals,Priya Nair,Meals - Cafe Bloom
+INV-1014,Acme Office Supplies,ACM-85290,2026-08-20,374.11,Office Supplies,Rohan Gupta,Office Supplies - Acme Office Supplies
+INV-1015,PowerGrid Utilities,POW-68829,2026-08-19,1578.81,Utilities,Aarav Mehta,Utilities - PowerGrid Utilities
+INV-1016,Acme Office Supplies,ACM-77100,2026-08-27,172.38,Office Supplies,Rohan Gupta,Office Supplies - Acme Office Supplies
+INV-1017,SkyHigh Travels,SKY-74089,2026-08-27,191.17,Travel,Aarav Mehta,Travel - SkyHigh Travels
+INV-1018,AdWave Media,ADW-83148,2026-09-06,6523.66,Marketing,Rohan Gupta,Marketing - AdWave Media
+INV-1019,Cafe Bloom,CAF-55898,2026-09-08,67.15,Meals,Sara Khan,Meals - Cafe Bloom
+INV-1020,Acme Office Supplies,ACM-22267,2026-08-18,345.5,Office Supplies,Aarav Mehta,Office Supplies - Acme Office Supplies
+INV-1021,Acme Office Supplies,ACM-50580,2026-09-11,403.65,Office Supplies,Sara Khan,Office Supplies - Acme Office Supplies
+INV-1022,Cafe Bloom,CAF-60566,2026-09-12,51.44,Meals,Sara Khan,Meals - Cafe Bloom
+INV-1023,Cafe Bloom,CAF-32026,2026-09-09,27.3,Meals,Aarav Mehta,Meals - Cafe Bloom
+INV-1024,SkyHigh Travels,SKY-47674,2026-08-09,925.28,Travel,Sara Khan,Travel - SkyHigh Travels
+INV-1025,CloudNine Software,CLO-75078,2026-08-06,1082.28,Software,Sara Khan,Software - CloudNine Software
+INV-1026,Brightline Consulting,BRI-46416,2026-08-09,13469.92,Consulting,Vikram Rao,Consulting - Brightline Consulting
+INV-1027,Cafe Bloom,CAF-64433,2026-08-23,86.69,Meals,Sara Khan,Meals - Cafe Bloom
+INV-1028,SkyHigh Travels,SKY-29781,2026-08-06,335.03,Travel,Priya Nair,Travel - SkyHigh Travels
+INV-1029,PowerGrid Utilities,POW-40583,2026-08-01,1318.42,Utilities,Vikram Rao,Utilities - PowerGrid Utilities
+INV-1030,SkyHigh Travels,SKY-44438,2026-08-19,154.3,Travel,Sara Khan,Travel - SkyHigh Travels
+INV-1031,Brightline Consulting,BRI-58398,2026-09-09,9928.78,Consulting,Priya Nair,Consulting - Brightline Consulting
+INV-1032,PowerGrid Utilities,POW-77566,2026-09-09,1675.43,Utilities,Aarav Mehta,Utilities - PowerGrid Utilities
+INV-1033,CloudNine Software,CLO-99204,2026-09-21,2457.45,Software,Sara Khan,Software - CloudNine Software
+INV-1034,CloudNine Software,CLO-61658,2026-08-07,2185.33,Software,Priya Nair,Software - CloudNine Software
+INV-1035,Acme Office Supplies,ACM-34983,2026-08-05,631.41,Office Supplies,Sara Khan,Office Supplies - Acme Office Supplies
+INV-1036,SkyHigh Travels,SKY-24408,2026-08-22,780.76,Travel,Aarav Mehta,Travel - SkyHigh Travels
+INV-1037,Acme Office Supplies,ACM-84289,2026-08-10,380.51,Office Supplies,Rohan Gupta,Office Supplies - Acme Office Supplies
+INV-1038,Brightline Consulting,BRI-13342,2026-08-05,14240.65,Consulting,Vikram Rao,Consulting - Brightline Consulting
+INV-1039,CloudNine Software,CLO-29470,2026-09-10,1382.9,Software,Rohan Gupta,Software - CloudNine Software
+INV-1040,Brightline Consulting,BRI-57731,2026-08-31,3719.79,Consulting,Sara Khan,Consulting - Brightline Consulting
+INV-1041,CloudNine Software,CLO-72966,2026-08-31,1591.48,Software,Priya Nair,Software - CloudNine Software
+INV-1042,Acme Office Supplies,ACM-54909,2026-09-17,228.26,Office Supplies,Priya Nair,Office Supplies - Acme Office Supplies
+INV-1043,Brightline Consulting,BRI-13027,2026-08-14,15313.8,Consulting,Vikram Rao,Consulting - Brightline Consulting
+INV-1044,Cafe Bloom,CAF-29215,2026-09-14,72.03,Meals,Aarav Mehta,Meals - Cafe Bloom
+INV-1045,AdWave Media,ADW-79220,2026-08-20,7849.51,Marketing,Aarav Mehta,Marketing - AdWave Media
+INV-1046,PowerGrid Utilities,POW-44224,2026-09-03,1070.07,Utilities,Priya Nair,Utilities - PowerGrid Utilities
+INV-1047,Cafe Bloom,CAF-39201,2026-09-04,71.86,Meals,Vikram Rao,Meals - Cafe Bloom
+INV-1048,Cafe Bloom,CAF-93419,2026-08-15,79.39,Meals,Sara Khan,Meals - Cafe Bloom
+INV-1049,AdWave Media,ADW-41377,2026-09-22,3804.79,Marketing,Priya Nair,Marketing - AdWave Media
+INV-1050,SkyHigh Travels,SKY-77847,2026-09-01,523.34,Travel,Aarav Mehta,Travel - SkyHigh Travels
+INV-1051,Acme Office Supplies,ACM-46623,2026-08-31,225.14,Office Supplies,Vikram Rao,Office Supplies - Acme Office Supplies
+INV-1052,Cafe Bloom,CAF-68619,2026-09-21,113.39,Meals,Rohan Gupta,Meals - Cafe Bloom
+INV-1053,Cafe Bloom,CAF-20556,2026-08-15,25.73,Meals,Rohan Gupta,Meals - Cafe Bloom
+INV-1054,SkyHigh Travels,SKY-54267,2026-08-14,656.79,Travel,Vikram Rao,Travel - SkyHigh Travels
+INV-1055,AdWave Media,ADW-10250,2026-08-31,7364.39,Marketing,Rohan Gupta,Marketing - AdWave Media
+INV-1056,AdWave Media,ADW-94296,2026-08-06,6842.54,Marketing,Sara Khan,Marketing - AdWave Media
+INV-1057,SkyHigh Travels,SKY-44438,2026-08-19,154.3,Travel,Sara Khan,Travel - SkyHigh Travels
+INV-1058,Brightline Consulting,BRI-46416,2026-08-09,13469.92,Consulting,Vikram Rao,Consulting - Brightline Consulting
+INV-1059,Cafe Bloom,CAF-93419,2026-08-15,79.39,Meals,Sara Khan,Meals - Cafe Bloom
+INV-1060,Acme Office Supplies,ACM-85642,2026-09-07,302.14,Office Supplies,Priya Nair,Office Supplies - Acme Office Supplies
+INV-1061,Cafe Bloom,CAF-39202,2026-09-05,71.86,Meals,Vikram Rao,Meals - Cafe Bloom
+INV-1062,Brightline Consulting,BRI-17813,2026-09-10,4883.42,Consulting,Vikram Rao,Consulting - Brightline Consulting
+INV-1063,Acme Office Supplies,ACM-46624,2026-09-02,225.14,Office Supplies,Vikram Rao,Office Supplies - Acme Office Supplies
+INV-1064,AdWave Media,ADW-99392,2026-08-13,1721.39,Marketing,Vikram Rao,Marketing - AdWave Media
+INV-1065,,BRI-88101,2026-08-31,11201.76,Consulting,Rohan Gupta,Consulting - Brightline Consulting
+INV-1066,SkyHigh Travels,,2026-09-05,287.53,Travel,Aarav Mehta,Travel - SkyHigh Travels
+INV-1067,AdWave Media,ADW-95154,2026-08-07,4686.07,,Priya Nair,Marketing - AdWave Media
+INV-1068,CloudNine Software,CLO-35533,,3558.67,Software,Aarav Mehta,Software - CloudNine Software
+INV-1069,Cafe Bloom,CAF-37889,2026-08-19,,Meals,Vikram Rao,Meals - Cafe Bloom
+INV-1070,Cafe Bloom,CAF-43995,2026-09-04,178.44,Meals,Priya Nair,Meals - Cafe Bloom
+INV-1071,PowerGrid Utilities,POW-56371,2026-08-30,4270.23,Utilities,Vikram Rao,Utilities - PowerGrid Utilities
+INV-1072,Brightline Consulting,BRI-27139,2026-09-04,23243.16,Consulting,Vikram Rao,Consulting - Brightline Consulting
+INV-1073,CloudNine Software,CLO-34000,2026-09-08,6310.13,Software,Priya Nair,Software - CloudNine Software
+INV-1074,CloudNine Software,CLO-91146,2026-09-16,6809.44,Software,Aarav Mehta,Software - CloudNine Software
+INV-1075,Brightline Consulting,BRI-79563,2026-09-05,19400.0,Consulting,Aarav Mehta,Consulting - Brightline Consulting
+INV-1076,Brightline Consulting,BRI-17447,2026-08-16,19400.0,Consulting,Aarav Mehta,Consulting - Brightline Consulting
+INV-1077,AdWave Media,ADW-22811,2026-09-02,9700.0,Marketing,Aarav Mehta,Marketing - AdWave Media
+INV-1078,AdWave Media,ADW-18305,2027-03-15,3279.3,Marketing,Vikram Rao,Marketing - AdWave Media
+INV-1079,Brightline Consulting,BRI-77130,2019-01-10,11698.23,Consulting,Sara Khan,Consulting - Brightline Consulting
+INV-1080,Brightline Consulting Ltd., bri-13342 ,2026-08-05,14240.65,Consulting,Vikram Rao,Consulting - Brightline Consulting
+INV-1081,BRIGHTLINE CONSULTING, bri-57731 ,2026-08-31,3719.79,Consulting,Sara Khan,Consulting - Brightline Consulting
+INV-1082,Skyigh Travels,SKY-24408,2026-08-22,780.76,Travel,Aarav Mehta,Travel - SkyHigh Travels
+INV-1083,CloudNine Software,CLO-83336,2026-08-01,1591.48,Software,Priya Nair,Software - CloudNine Software
+INV-1084,Cafe Bloom,CAF-36553,2026-08-09,67.15,Meals,Sara Khan,Meals - Cafe Bloom
+INV-1085,AdWave Media,ADW-68658,2026-07-07,6842.54,Marketing,Sara Khan,Marketing - AdWave Media
+INV-1086,Acme Office Supplies,ACM-27974,2026-09-07,228.26,Office Supplies,Priya Nair,Office Supplies - Acme Office Supplies
+INV-1087,Acme Office Supplies,ACM-64609,2026-08-08,345.5,Office Supplies,Aarav Mehta,Office Supplies - Acme Office Supplies
+INV-1088,Metro Trade Partners,MTP-67949,2026-08-24,504.6,Utilities,Aarav Mehta,Utilities - PowerGrid Utilities
+INV-1089,Metro Trade Partners,MTP-51416,2026-09-09,9928.78,Consulting,Priya Nair,Consulting - Brightline Consulting
+INV-1090,SkyHigh Travels,SKY-97969,2026-09-10,825.0,Travel,Aarav Mehta,Travel - SkyHigh Travels
+INV-1091,SkyHigh Travels,SKY-97749,2026-09-11,900.0,Travel,Aarav Mehta,Travel - SkyHigh Travels
+INV-1092,CloudNine Software,CLO-28740,2026-09-10,2500.0,Software,Rohan Gupta,Software - CloudNine Software
+INV-1093,CloudNine Software,CLO-38781,2026-09-11,2900.0,Software,Rohan Gupta,Software - CloudNine Software
