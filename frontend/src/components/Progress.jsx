@@ -4,7 +4,7 @@ import {money} from "../ui";
 export default function Progress({rows,summary}){
   const [mins,setMins]=useState(2);
   const ex=rows.filter(r=>r.status!=="AUTO_PASS"),done=ex.filter(r=>r.human_decision),rej=done.filter(r=>r.human_decision==="REJECTED");
-  const saved=rej.reduce((t,r)=>t+(r.flags.reduce((s,f)=>s+(f.at_risk||0),0)||r.amount||0),0);
+  const saved=rej.reduce((t,r)=>t+r.flags.reduce((s,f)=>s+(f.at_risk||0),0),0);
   const pct=ex.length?done.length/ex.length:1,C=2*Math.PI*18;
   return <div className="mt-4 bg-white rounded-lg border border-slate-200 p-4 flex flex-wrap items-center gap-6 text-sm">
     <svg width="48" height="48" viewBox="0 0 48 48" role="img" aria-label={"Reviewed "+done.length+" of "+ex.length}>

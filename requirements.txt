@@ -6,3 +6,6 @@ openpyxl
 rapidfuzz
 requests
 psycopg[binary]
+scikit-learn==1.7.2
+joblib>=1.3,<2
+argon2-cffi>=23,<26

@@ -5,4 +5,10 @@ __pycache__/
 backend/audit.db
 backend/server.out.log
 backend/server.err.log
+data/local-server*.log
+data/pip-tmp/
+data/sklearn-1.7.2/
 frontend/node_modules/
+Veri-Fi-final-portable.zip
+scratch/
+data/*.db

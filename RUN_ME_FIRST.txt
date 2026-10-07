@@ -1,0 +1,21 @@
+VERI-FI — RUN THIS FIRST
+
+Windows
+1. Install Python 3.10 through 3.13 from https://www.python.org/downloads/ if it is not installed.
+2. Extract this ZIP to a normal folder (do not run it from inside the ZIP preview).
+3. Double-click START_VERI_FI.bat.
+4. The first launch downloads the Python packages and can take a few minutes. It needs internet access.
+5. Your browser opens Veri-Fi at http://localhost:8000. Keep the Veri-Fi server window open while using the app.
+6. For the local demo, sign in as admin@verifi.local / VeriFiAdmin!2026 or employee@verifi.local / VeriFiEmployee!2026. The first admin sign-in guides you through setting up an authenticator app; keep the setup key private.
+
+macOS / Linux
+1. Install Python 3.10 through 3.13.
+2. Extract this ZIP, open Terminal in the extracted folder, and run: bash START_VERI_FI.sh
+
+Notes
+- Includes a trained Isolation Forest for low-confidence invoice outlier review; it uses a synthetic demo baseline, is not a fraud probability, and never makes payment decisions.
+- Demo accounts are for a local showcase only. For a fresh install, set VERIFI_ADMIN_PASSWORD and VERIFI_EMPLOYEE_PASSWORD before first startup to replace the demo passwords.
+- No Azure OpenAI key or Node.js is required. Veri-Fi uses its built-in local explanation fallback.
+- First image OCR needs internet to download the OCR engine and English model. The invoice image and OCR text stay in the browser; only the fields you confirm are sent to Veri-Fi.
+- The app stores its local audit database under backend/audit.db. Keep the folder writable.
+- To stop the Windows server, close the Veri-Fi server window. To stop the macOS/Linux server, press Ctrl+C in Terminal.
