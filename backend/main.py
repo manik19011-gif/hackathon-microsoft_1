@@ -691,4 +691,17 @@ except Exception as e:
 
 UI = BASE / "frontend" / "dist"          # built by `npm run build`
 if not UI.exists(): UI = BASE / "frontend" / "legacy"   # CDN fallback, no build needed
+
+@app.get("/")
+@app.get("/index.html")
+def serve_index():
+    index_file = UI / "index.html"
+    if index_file.exists():
+        return FileResponse(index_file, headers={
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
+            "Expires": "0"
+        })
+    return FileResponse(UI / "index.html")
+
 app.mount("/", StaticFiles(directory=UI, html=True), name="ui")
