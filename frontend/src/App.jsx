@@ -23,16 +23,25 @@ const TOUR=[
 ];
 export default function App(){
   const [user,setUser]=useState(null),[authReady,setAuthReady]=useState(false);
+  const [dark,setDark]=useState(()=>localStorage.getItem("verifi_theme")==="dark");
+
+  useEffect(()=>{
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.setItem("verifi_theme", dark ? "dark" : "light");
+  },[dark]);
+
+  const toggleDark=()=>setDark(d=>!d);
+
   useEffect(()=>{const expired=()=>{setUser(null);setAuthReady(true);api.get("/auth/csrf").catch(()=>{})};window.addEventListener("verifi:session-expired",expired);api.get("/auth/me").then(r=>setUser(r.data.user)).catch(()=>{}).finally(()=>setAuthReady(true));api.get("/auth/csrf").catch(()=>{});return()=>window.removeEventListener("verifi:session-expired",expired)},[]);
   const logout=async()=>{try{await api.post("/auth/logout")}catch{}setUser(null);setAuthReady(true);api.get("/auth/csrf").catch(()=>{})};
   if(!authReady)return <div className="auth-loading"><span className="brand-mark">✳</span><b>Veri-Fi</b><small>Securing your workspace…</small></div>;
-  if(!user)return <SignIn onSignedIn={setUser}/>;
-  if(user.role==="employee")return <EmployeePortal user={user} onLogout={logout} onUserUpdated={setUser}/>;
+  if(!user)return <SignIn onSignedIn={setUser} dark={dark} onToggleDark={toggleDark}/>;
+  if(user.role==="employee")return <EmployeePortal user={user} onLogout={logout} onUserUpdated={setUser} dark={dark} onToggleDark={toggleDark}/>;
   if(!user.mfa_enabled)return <MfaSetup user={user} onEnabled={setUser} onLogout={logout}/>;
-  return <Workspace user={user} onLogout={logout}/>;
+  return <Workspace user={user} onLogout={logout} dark={dark} onToggleDark={toggleDark}/>;
 }
 
-function Workspace({user,onLogout}){
+function Workspace({user,onLogout,dark,onToggleDark}){
   const [res,setRes]=useState(null),[tab,setTab]=useState("results"),[filter,setFilter]=useState("ALL"),[sel,setSel]=useState(null),[busy,setBusy]=useState(false),[busyLabel,setBusyLabel]=useState("Checking invoices…"),[err,setErr]=useState(""),[downloadMsg,setDownloadMsg]=useState(""),[q,setQ]=useState(""),[sort,setSort]=useState(null),[exceptionsFirst,setExceptionsFirst]=useState(true),[demoTour,setDemoTour]=useState(false),[demoStep,setDemoStep]=useState(0),[ocrOpen,setOcrOpen]=useState(false),[modelInfo,setModelInfo]=useState(null),[payMenu,setPayMenu]=useState(false);
   const refresh=async()=>{const {data}=await api.get("/results");setRes(data.rows?data:null)};
   useEffect(()=>{refresh().catch(()=>{});api.get("/model").then(r=>setModelInfo(r.data)).catch(()=>{})},[]);
@@ -90,7 +99,11 @@ function Workspace({user,onLogout}){
     <main className={`app-shell max-w-7xl mx-auto px-4 py-5 sm:px-6 lg:px-8 ${tab==="admin"?"admin-mode":""}`}>
     <header className="app-header flex flex-wrap items-center justify-between gap-4">
       <div className="flex items-center gap-3"><div className="brand-mark" aria-hidden="true">✳</div><div><div className="eyebrow">ACCOUNTS PAYABLE · CONTROL CENTER</div><h1 className="text-xl sm:text-2xl font-bold tracking-tight">Veri-Fi</h1><p className="text-xs text-slate-500 mt-0.5">Invoice &amp; Expense Checker</p></div></div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center">
+        <button className={btn+" flex items-center gap-1.5 font-medium"} onClick={onToggleDark} title={dark?"Switch to light theme":"Switch to dark theme"}>
+          <span>{dark ? "☀" : "☾"}</span>
+          <span>{dark ? "Light" : "Dark"}</span>
+        </button>
         <button className={btn+" border-teal-200 text-teal-800"} disabled={busy} onClick={()=>setOcrOpen(true)}>Scan invoice</button>
         <button className={btn} disabled={busy} onClick={()=>load(api.post("/sample"))}>Load sample data</button>
         <button className={btn} disabled={busy} onClick={startDemo}>Start 90-second demo</button>

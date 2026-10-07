@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import api from "../api";
 import {documentText, parseInvoiceText} from "./OCRIntake";
 
-export function SignIn({onSignedIn}) {
+export function SignIn({onSignedIn, dark, onToggleDark}) {
   const [mode,setMode]=useState("signin"); // "signin" | "signup"
   const [email,setEmail]=useState("admin@verifi.local"),[password,setPassword]=useState("VeriFiAdmin!2026"),[otp,setOtp]=useState(""),[error,setError]=useState(""),[busy,setBusy]=useState(false),[show,setShow]=useState(false);
   const [regName,setRegName]=useState(""),[regEmail,setRegEmail]=useState(""),[regDept,setRegDept]=useState("Operations"),[regPassword,setRegPassword]=useState(""),[regShow,setRegShow]=useState(false);
@@ -50,8 +50,21 @@ export function SignIn({onSignedIn}) {
     </section>
 
     <section className="auth-main">
-      <div className="auth-card">
-        <div className="auth-mobile-brand">✳ <b>Veri-Fi</b></div>
+      <div className="auth-card relative">
+        <div className="flex items-center justify-between mb-3">
+          <div className="auth-mobile-brand">✳ <b>Veri-Fi</b></div>
+          {onToggleDark && (
+            <button
+              type="button"
+              onClick={onToggleDark}
+              className="ml-auto px-2.5 py-1 text-xs rounded-md border border-slate-200 hover:bg-slate-100 flex items-center gap-1 text-slate-600 cursor-pointer"
+              title="Toggle theme"
+            >
+              <span>{dark ? "☀" : "☾"}</span>
+              <span>{dark ? "Light" : "Dark"}</span>
+            </button>
+          )}
+        </div>
 
         {/* Tab switch between Sign In and Employee Sign Up */}
         <div className="auth-mode-toggle" role="tablist">
@@ -118,7 +131,7 @@ export function SignIn({onSignedIn}) {
   </main>;
 }
 
-export function EmployeePortal({user,onLogout,onUserUpdated}) {
+export function EmployeePortal({user,onLogout,onUserUpdated,dark,onToggleDark}) {
   const [tab,setTab]=useState("home"),[requests,setRequests]=useState([]),[resources,setResources]=useState([]),[busy,setBusy]=useState(false),[message,setMessage]=useState(""),[error,setError]=useState(""),[form,setForm]=useState({kind:"Expense reimbursement",title:"",description:"",amount:0,vendor:"",receipt_name:""}),[profile,setProfile]=useState({name:user.name,department:user.department,current_password:"",new_password:""});
   const [scanProgress,setScanProgress]=useState(null),[scannedFile,setScannedFile]=useState(""),[scannedInfo,setScannedInfo]=useState(null),[scanning,setScanning]=useState(false);
   const refresh=async()=>{setError("");try{const [r,d]=await Promise.all([api.get("/employee/requests"),api.get("/employee/resources")]);setRequests(r.data);setResources(d.data)}catch(e){setError(e.response?.data?.detail||"Could not load your workspace.")}};
@@ -169,7 +182,7 @@ export function EmployeePortal({user,onLogout,onUserUpdated}) {
   };
 
   const saveProfile=async e=>{e.preventDefault();setBusy(true);setError("");setMessage("");try{const {data}=await api.put("/employee/profile",profile);onUserUpdated(data.user);setProfile({...profile,name:data.user.name,department:data.user.department,current_password:"",new_password:""});setMessage(data.password_changed?"Profile and password updated. Please sign in again.":"Profile updated successfully.");if(data.password_changed)await onLogout()}catch(e){setError(e.response?.data?.detail||"Profile could not be updated.")}finally{setBusy(false)}};
-  return <div className="portal-shell"><aside className="portal-sidebar"><div className="portal-brand"><span>✳</span><div><b>Veri-Fi</b><small>EMPLOYEE SPACE</small></div></div><div className="portal-nav-label">YOUR WORKSPACE</div><nav>{[["home","Overview","⌂"],["requests","My requests","↗"],["resources","Resources","▤"],["profile","My profile","○"]].map(([id,label,icon])=><button key={id} className={tab===id?"selected":""} onClick={()=>{setTab(id);setMessage("");setError("")}}><span>{icon}</span>{label}{id==="requests"&&requests.some(r=>r.status==="pending")&&<i>{requests.filter(r=>r.status==="pending").length}</i>}</button>)}</nav><div className="portal-user"><div className="avatar">{user.name.slice(0,1).toUpperCase()}</div><div className="portal-user-text"><b>{user.name}</b><small>{user.role} · {user.department||"Team member"}</small></div><button title="Sign out" onClick={onLogout}>↪</button></div></aside><main className="portal-main"><header className="portal-header"><div><div className="eyebrow">EMPLOYEE WORKSPACE</div><h1>{tab==="home"?`Good to see you, ${user.name.split(" ")[0]}`:({requests:"My requests",resources:"Company resources",profile:"Your profile"}[tab])}</h1><p>Access your information and get support from Finance.</p></div><button className="portal-signout" onClick={onLogout}>Sign out <span>↗</span></button></header>{error&&<div className="portal-alert error" role="alert">{error}</div>}{message&&<div className="portal-alert success" role="status">✓ {message}</div>}
+  return <div className="portal-shell"><aside className="portal-sidebar"><div className="portal-brand"><span>✳</span><div><b>Veri-Fi</b><small>EMPLOYEE SPACE</small></div></div><div className="portal-nav-label">YOUR WORKSPACE</div><nav>{[["home","Overview","⌂"],["requests","My requests","↗"],["resources","Resources","▤"],["profile","My profile","○"]].map(([id,label,icon])=> <button key={id} className={tab===id?"selected":""} onClick={()=>{setTab(id);setMessage("");setError("")}}><span>{icon}</span>{label}{id==="requests"&&requests.some(r=>r.status==="pending")&&<i>{requests.filter(r=>r.status==="pending").length}</i>}</button>)}</nav><div className="portal-user"><div className="avatar">{user.name.slice(0,1).toUpperCase()}</div><div className="portal-user-text"><b>{user.name}</b><small>{user.role} · {user.department||"Team member"}</small></div><button title="Sign out" onClick={onLogout}>↪</button></div></aside><main className="portal-main"><header className="portal-header"><div><div className="eyebrow">EMPLOYEE WORKSPACE</div><h1>{tab==="home"?`Good to see you, ${user.name.split(" ")[0]}`:({requests:"My requests",resources:"Company resources",profile:"Your profile"}[tab])}</h1><p>Access your information and get support from Finance.</p></div><div className="flex items-center gap-2">{onToggleDark&&<button className="portal-signout" onClick={onToggleDark} title="Toggle theme"><span>{dark?"☀ Light":"☾ Dark"}</span></button>}<button className="portal-signout" onClick={onLogout}>Sign out <span>↗</span></button></div></header>{error&&<div className="portal-alert error" role="alert">{error}</div>}{message&&<div className="portal-alert success" role="status">✓ {message}</div>}
     {tab==="home"&&<><section className="employee-welcome"><div><span className="eyebrow">YOUR FINANCE HUB</span><h2>How can we help today?</h2><p>Submit a request, scan a receipt for instant auto-fill, or find a company resource.</p></div><div className="welcome-orbit">✳</div></section><div className="employee-stats"><button onClick={()=>setTab("requests")}><span>OPEN REQUESTS</span><b>{requests.filter(r=>["pending","in_progress"].includes(r.status)).length}</b><small>Being handled by Finance →</small></button><button onClick={()=>setTab("requests")}><span>COMPLETED</span><b>{requests.filter(r=>["approved","rejected"].includes(r.status)).length}</b><small>Reviewed requests →</small></button><button onClick={()=>setTab("resources")}><span>RESOURCES</span><b>{resources.length}</b><small>Guides and useful links →</small></button></div><div className="portal-section-heading"><div><h2>Quick actions</h2><p>Everything you need, in one place.</p></div></div><div className="quick-action-grid"><button onClick={()=>setTab("requests")}><span className="quick-icon teal">↗</span><b>Submit a request</b><small>Scan receipt or ask for reimbursement</small><i>Start request →</i></button><button onClick={()=>setTab("resources")}><span className="quick-icon purple">▤</span><b>Browse resources</b><small>Read policies and helpful guides</small><i>Explore resources →</i></button><button onClick={()=>setTab("profile")}><span className="quick-icon amber">○</span><b>Update your profile</b><small>Keep your contact and team details current</small><i>View profile →</i></button></div><div className="portal-section-heading"><div><h2>Recent activity</h2><p>The latest updates to your requests.</p></div><button onClick={()=>setTab("requests")}>View all →</button></div><RequestList requests={requests.slice(0,3)}/></>}
     {tab==="requests"&&<div className="employee-columns"><section className="portal-card"><div className="portal-section-heading"><div><h2>Submit a request</h2><p>Scan a receipt for instant auto-fill, or enter manually.</p></div></div>
       <div className="mb-4 p-3.5 rounded-xl border border-dashed border-teal-300 bg-teal-50/50 flex flex-col gap-2">
